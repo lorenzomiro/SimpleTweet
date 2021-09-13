@@ -13,7 +13,7 @@ public class User {
 
     public String screen_name;
 
-    public String public_image_url;
+    public String profile_image_url;
 
     public static User fromJson(JSONObject jsonObject) throws JSONException {
 
@@ -23,7 +23,7 @@ public class User {
 
         user.screen_name = jsonObject.getString("screen_name");
 
-        user.public_image_url = jsonObject.getString("public_image_url_https");
+        user.profile_image_url = jsonObject.getString("profile_image_url_https");
 
         return user;
 

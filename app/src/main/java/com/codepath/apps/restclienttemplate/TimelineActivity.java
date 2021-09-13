@@ -1,11 +1,21 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Headers;
 
@@ -13,11 +23,19 @@ public class TimelineActivity extends AppCompatActivity {
 
     //tags for failure/success
 
-    public static final String TAG = "TimelineActivitty";
+    public static final String TAG = "TimelineActivity";
 
-    //create instance of client
+    //create instances of client + recycler view
 
     TwitterClient client;
+
+    RecyclerView rvTweets;
+
+    List<Tweet> tweet_list;
+
+    TweetsAdapter adapter;
+
+    SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +43,22 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApp.getRestClient(this);
+
+        //Find recycler view
+
+        rvTweets = findViewById(R.id.rvTweets);
+
+        //Initialize tweet lists + adapter
+
+        tweet_list = new ArrayList<>();
+
+        adapter = new TweetsAdapter(this, tweet_list);
+
+        //setup recycler view (layout manager + adapter)
+
+        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+
+        rvTweets.setAdapter(adapter);
 
         populateHomeTimeline();
 
@@ -35,11 +69,28 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "onSuccess!" + json.toString());
+
+                JSONArray jsonArray = json.jsonArray;
+
+                try {
+
+                    tweet_list.addAll(Tweet.fromJsonArray(jsonArray));
+
+                    //notify adapter that data has changed
+
+                    adapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+
+                    Log.e(TAG, "Json exception", e);
+
+                }
+
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure.", throwable);
+                Log.e(TAG, "onFailure." + response, throwable);
             }
         });
 

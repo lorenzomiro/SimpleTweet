@@ -1,7 +1,11 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tweet {
 
@@ -25,4 +29,17 @@ public class Tweet {
 
     }
 
+    public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
+
+        List<Tweet> tweets = new ArrayList<>();
+
+        for (int n = 0; n < jsonArray.length(); n++) {
+
+            tweets.add(fromJson(jsonArray.getJSONObject(n)));
+
+        }
+
+        return tweets;
+
+    }
 }

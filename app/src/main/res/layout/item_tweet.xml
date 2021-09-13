@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -17,24 +18,26 @@
 
     <TextView
         android:id="@+id/tvScreenName"
-        android:layout_width="138dp"
-        android:layout_height="39dp"
+        android:layout_width="308dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="9dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="196dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView"
         tools:text="lorenzo__miro" />
 
     <TextView
         android:id="@+id/tvBody"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="315dp"
+        android:layout_height="57dp"
         android:layout_below="@+id/tvScreenName"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="2dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:text="Hello Twitter!" />
 </RelativeLayout>
