@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
@@ -95,6 +97,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         TextView tvScreenName;
 
+        TextView tvTime;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -106,11 +110,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
 
+            tvTime = itemView.findViewById(R.id.tvTime);
+
         }
 
         public void bind(Tweet tweet) {
 
             tvBody.setText(tweet.body);
+
+            tvTime.setText(tweet.time_stamp);
 
             tvScreenName.setText(tweet.user.screen_name);
 
