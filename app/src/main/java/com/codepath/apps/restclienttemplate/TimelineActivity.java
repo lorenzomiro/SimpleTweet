@@ -35,7 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     TweetsAdapter adapter;
 
-    SwipeRefreshLayout swipeContainer;
+    SwipeRefreshLayout swipe_container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,24 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApp.getRestClient(this);
+
+        swipe_container = findViewById(R.id.swipe_container);
+
+        // Configure the refreshing colors
+        swipe_container.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        swipe_container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.i(TAG, "fetching new data...");
+
+                populateHomeTimeline();
+
+            }
+        });
 
         //Find recycler view
 
@@ -74,11 +92,17 @@ public class TimelineActivity extends AppCompatActivity {
 
                 try {
 
-                    tweet_list.addAll(Tweet.fromJsonArray(jsonArray));
+                    adapter.clear();
+
+                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
 
                     //notify adapter that data has changed
 
                     adapter.notifyDataSetChanged();
+
+                    // call setRefreshing(false) to signal refresh has finished
+
+                    swipe_container.setRefreshing(false);
 
                 } catch (JSONException e) {
 

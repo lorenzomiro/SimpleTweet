@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.codepath.apps.restclienttemplate"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
 
         // Room schemas
         javaCompileOptions {
@@ -71,4 +71,5 @@ dependencies {
     implementation 'com.codepath.libraries:asynchttpclient:2.2.0'
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 }
