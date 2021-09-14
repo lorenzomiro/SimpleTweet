@@ -38,6 +38,8 @@ public class TimelineActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipe_container;
 
+    EndlessRecyclerViewScrollListener scrollListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +77,21 @@ public class TimelineActivity extends AppCompatActivity {
 
         //setup recycler view (layout manager + adapter)
 
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        rvTweets.setLayoutManager(layoutManager);
 
         rvTweets.setAdapter(adapter);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+
+
+
+        };
+
+        //add scroll listener -> recyclerview
+
+        rvTweets.addOnScrollListener(scrollListener);
 
         populateHomeTimeline();
 
