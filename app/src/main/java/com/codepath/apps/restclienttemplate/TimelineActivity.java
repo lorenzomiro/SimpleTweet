@@ -84,8 +84,14 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setAdapter(adapter);
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view){
 
+                Log.i(TAG, "onLoadMore: " + page);
 
+                loadMoreData();
+
+            }
 
         };
 
@@ -95,6 +101,53 @@ public class TimelineActivity extends AppCompatActivity {
 
         populateHomeTimeline();
 
+    }
+
+    private void loadMoreData() {
+        // Send an API request to retrieve appropriate paginated data
+
+        client.getNextPageOfTweets(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                Log.i(TAG, "loadMoreData onSuccess!" + json.toString());
+
+                // Deserialize and construct new model objects from the API response
+
+                JSONArray jsonArray = json.jsonArray;
+
+                try {
+
+                    List<Tweet> tweets = Tweet.fromJsonArray(jsonArray);
+
+                    // Append the new data objects to the existing set of items inside the array of items
+
+                    // Notify the adapter of the new items made with `notifyItemRangeInserted()`
+
+                    adapter.addAll(tweets);
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                }
+
+                // Notify the adapter of the new items made with `notifyItemRangeInserted()`
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
+                Log.e(TAG, "loadMoreData onFailure :( ," + throwable);
+
+            }
+        }, tweet_list.get(tweet_list.size() - 1).id);
+
+    }
+
+
+    private void loadNextDataFromAPI() {
     }
 
     private void populateHomeTimeline() {
