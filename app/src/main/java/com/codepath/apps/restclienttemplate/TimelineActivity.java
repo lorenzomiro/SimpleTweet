@@ -132,8 +132,6 @@ public class TimelineActivity extends AppCompatActivity {
 
                 }
 
-                // Notify the adapter of the new items made with `notifyItemRangeInserted()`
-
             }
 
             @Override
