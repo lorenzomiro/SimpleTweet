@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ public class TimelineActivity extends AppCompatActivity {
     //tags for failure/success
 
     public static final String TAG = "TimelineActivity";
+
+    private final int REQUEST_CODE = 20;
 
     //create instances of client + recycler view
 
@@ -129,13 +133,40 @@ public class TimelineActivity extends AppCompatActivity {
 
             Intent i = new Intent(this, ComposeActivity.class);
 
-            startActivity(i);
+            startActivityForResult(i, REQUEST_CODE);
 
             return true;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+
+            //get intent's data (tweet)
+
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+
+            //update RV w/new tweet
+
+            //modify data source of tweets
+
+            tweet_list.add(0, tweet);
+
+            //update the adapter
+
+            adapter.notifyItemInserted(0);
+
+            rvTweets.smoothScrollToPosition(0);
+
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loadMoreData() {
