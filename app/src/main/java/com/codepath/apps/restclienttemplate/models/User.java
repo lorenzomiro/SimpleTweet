@@ -1,5 +1,9 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,12 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
+@Entity
 public class User {
 
+    @ColumnInfo
+    @PrimaryKey
+    public long id;
+
+    @ColumnInfo
     public String name;
 
+    @ColumnInfo
     public String screen_name;
 
+    @ColumnInfo
     public String profile_image_url;
 
     //empty constructor needed by the Parceler library
@@ -23,6 +35,8 @@ public class User {
     public static User fromJson(JSONObject jsonObject) throws JSONException {
 
         User user = new User();
+
+        user.id = jsonObject.getLong("id");
 
         user.name = jsonObject.getString("name");
 

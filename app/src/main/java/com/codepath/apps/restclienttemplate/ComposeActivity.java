@@ -85,7 +85,7 @@ public class ComposeActivity extends AppCompatActivity {
 
                             i.putExtra("tweet", Parcels.wrap(tweet));
 
-                            //set result code + bundle response dat
+                            //set result code + bundle response data
 
                             setResult(RESULT_OK, i);
 
