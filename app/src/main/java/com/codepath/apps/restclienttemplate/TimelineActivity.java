@@ -20,6 +20,7 @@ import com.codepath.apps.restclienttemplate.models.SampleModelDao;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDao;
 import com.codepath.apps.restclienttemplate.models.TweetWithUser;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -133,10 +134,9 @@ public class TimelineActivity extends AppCompatActivity {
                 adapter.addAll(tweets_from_DB);
 
             }
-
         });
 
-        tweetDao.recentItems();
+        //tweetDao.recentItems();
 
         populateHomeTimeline();
 
@@ -255,8 +255,8 @@ public class TimelineActivity extends AppCompatActivity {
                 try {
 
                     adapter.clear();
-
-                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
+                    List<Tweet> tweetsFromNetwork = Tweet.fromJsonArray(jsonArray);
+                    adapter.addAll(tweetsFromNetwork);
 
                     //notify adapter that data has changed
 
@@ -265,16 +265,25 @@ public class TimelineActivity extends AppCompatActivity {
                     // call setRefreshing(false) to signal refresh has finished
 
                     swipe_container.setRefreshing(false);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Log.i(TAG, "Showing data from database");
+                            List<User> usersFromNetwork = User.fromTweetList(tweetsFromNetwork);
+                            tweetDao.insertModel(usersFromNetwork.toArray(new User[0]));
+
+                            tweetDao.insertModel(tweetsFromNetwork.toArray(new Tweet[0]));
+
+                        }
+                    });
 
                 } catch (JSONException e) {
-
-                    Log.e(TAG, "Json exception", e);
-
+                    e.printStackTrace();
                 }
-
             }
 
-            @Override
+                @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure." + response, throwable);
             }

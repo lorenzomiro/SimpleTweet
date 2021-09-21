@@ -47,7 +47,13 @@ public class User {
         return user;
 
     }
-
+    public static List<User> fromTweetList(List<Tweet> tweets){
+        List<User> users = new ArrayList<>();
+        for(int i =0; i <tweets.size(); i++){
+            users.add(tweets.get(i).user);
+        }
+        return users;
+    }
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
 
         List<Tweet> tweets = new ArrayList<>();

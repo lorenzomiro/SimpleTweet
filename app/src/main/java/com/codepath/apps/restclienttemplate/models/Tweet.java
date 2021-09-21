@@ -53,8 +53,6 @@ public class Tweet {
 
         User user = User.fromJson(jsonObject.getJSONObject("user"));
 
-        tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-
         tweet.user = user;
 
         tweet.user_id = user.id;
@@ -77,7 +75,7 @@ public class Tweet {
 
         for (int n = 0; n < jsonArray.length(); n++) {
 
-            tweets.add(fromJson(jsonArray.getJSONObject(n)));
+            tweets.add(Tweet.fromJson(jsonArray.getJSONObject(n)));
 
         }
 
