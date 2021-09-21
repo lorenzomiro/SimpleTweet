@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -18,6 +19,7 @@ public class User {
 
     @ColumnInfo
     @PrimaryKey
+    @NonNull
     public long id;
 
     @ColumnInfo
